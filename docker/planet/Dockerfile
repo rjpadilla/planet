@@ -1,5 +1,7 @@
 FROM vmnet8/planet
 
+RUN rm -rf /usr/share/nginx/html/*
+
 COPY docker/planet/default.conf /etc/nginx/conf.d/
 COPY package.json ./
 COPY docker/planet/scripts/ ./

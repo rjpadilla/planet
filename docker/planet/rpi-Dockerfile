@@ -1,5 +1,7 @@
 FROM vmnet8/rpi
 
+RUN rm -rf /usr/share/nginx/html/*
+
 COPY docker/planet/default.conf /etc/nginx/conf.d/
 COPY docker/planet/scripts/docker-entrypoint.sh ./
 COPY ./ng-app/dist/usr/share/nginx/html /usr/share/nginx/html

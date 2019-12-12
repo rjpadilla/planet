@@ -1,4 +1,4 @@
-FROM vmnet8/planet
+FROM vmnet8/preplanet:x86
 
 RUN rm -rf /usr/share/nginx/html/*
 

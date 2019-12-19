@@ -1,7 +1,4 @@
-FROM node:10.16.0-alpine
-
-RUN apk update ;\
-    apk add --no-cache bash curl git jq ca-certificates
+FROM treehouses/preplanet:db-init-x86
 
 RUN npm config set unsafe-perm true \
     && npm install -g add-cors-to-couchdb \

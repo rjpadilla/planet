@@ -6,11 +6,9 @@ RUN bash ./crosscompile_db-init.sh armv7 install
 
 #####
 
-FROM hypriot/rpi-node:6.10.0-alpine
+FROM treehouses/preplanet:db-init-rpi 
 
-RUN apk update ;\
-    apk add --no-cache bash curl git jq ca-certificates;\
-    mkdir -p /usr/local/lib/node_modules; \
+RUN mkdir -p /usr/local/lib/node_modules; \
     ln -s /usr/local/lib/node_modules/add-cors-to-couchdb/bin.js /usr/local/bin/add-cors-to-couchdb
 
 COPY --from=builder /usr/lib/node_modules /usr/local/lib/node_modules

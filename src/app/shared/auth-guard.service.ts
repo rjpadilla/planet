@@ -35,7 +35,7 @@ export class AuthService {
         }
         this.userService.unset();
         const returnUrl = url === '/' ? null : url;
-        this.router.navigate([ '/login' ], { queryParams: { returnUrl }, replaceUrl: true });
+        this.router.navigate([ '/' ]);
         return of(false);
       }),
       map(isLoggedIn => isLoggedIn)
@@ -44,8 +44,8 @@ export class AuthService {
 
   // For main app (which requires login).  Uses canActivateChild to check on every route
   // change if session has expired
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.checkUser(state.url);
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> {
+    return state.url === '/' ? true : this.checkUser(state.url);
   }
 
   // For login route will redirect to main app if there is an active session

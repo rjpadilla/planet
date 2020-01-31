@@ -37,7 +37,7 @@ export class CommunityComponent implements OnInit, OnDestroy {
   showNewsButton = true;
   deleteMode = false;
   onDestroy$ = new Subject<void>();
-  isCommunityLeader = this.user.isUserAdmin || this.user.roles.indexOf('leader') > -1;
+  isCommunityLeader = this.user._id && (this.user.isUserAdmin || this.user.roles.indexOf('leader') > -1);
   planetCode: string | null;
 
   constructor(

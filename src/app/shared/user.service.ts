@@ -97,7 +97,7 @@ export class UserService {
     return properties.reduce((object, key) => ({ ...object, [key]: user[key] }), {});
   }
 
-  private setUserProperties(users) {
+  setUserProperties(users) {
     this.userProperties = users.reduce((properties: string[], user: any) => {
       const { requestId, _attachments, ...profile } = user;
       return [ ...properties, ...Object.keys(profile).filter((prop: string) => this.credentialProperties.indexOf(prop) === -1) ];

@@ -48,10 +48,10 @@ export class UsersService {
   }
 
   getAllUsers(withPrivateDocs = false) {
-    return this.couchService.findAll(this.dbName).pipe(map(users => withPrivateDocs ?
-      users :
-      users.map(user => this.userService.getUserProperties(user))
-    ));
+    return this.couchService.findAll(this.dbName).pipe(map(users => {
+      this.userService.setUserProperties(users);
+      return withPrivateDocs ? users : users.map(user => this.userService.getUserProperties(user));
+    }));
   }
 
   requestUsers(withPrivateDocs = false) {

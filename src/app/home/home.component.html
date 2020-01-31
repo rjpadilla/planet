@@ -39,51 +39,56 @@
     </ng-container>
   </span>
   <span class="navbar-right">
-    <ng-container *planetBeta>
-      <ng-container *ngIf="planetType === 'community'">
-        <button mat-icon-button *planetAuthorizedRoles="'only,health'" i18n-title title="Health" routerLink="/health"><mat-icon>local_hospital</mat-icon></button>
+    <ng-container *ngIf="user._id">
+      <ng-container *planetBeta>
+        <ng-container *ngIf="planetType === 'community'">
+          <button mat-icon-button *planetAuthorizedRoles="'only,health'" i18n-title title="Health" routerLink="/health"><mat-icon>local_hospital</mat-icon></button>
+        </ng-container>
+      </ng-container>
+      <button mat-icon-button planetFeedback i18n-title title="Feedback" *ngIf="layout === 'classic' && !forceModern"><mat-icon>feedback_outline</mat-icon></button>
+      <button mat-icon-button routerLink="/feedback" i18n-title title="Messages"><mat-icon>mail_outline</mat-icon></button>
+      <ng-container *planetAuthorizedRoles>
+        <button mat-icon-button planetSync i18n-title title="Sync" *ngIf="onlineStatus === 'accepted' && layout === 'classic' && !forceModern"><mat-icon svgIcon="feedback"></mat-icon></button>
+      </ng-container>
+      <button mat-icon-button routerLink="/manager" i18n-title title="Manager Settings" *planetAuthorizedRoles="'manager,monitor'"><mat-icon svgIcon="usersettings"></mat-icon></button>
+      <ng-container *planetAuthorizedRoles="'learner'">
+        <button mat-icon-button *ngIf="notifications.length > 0" [matMenuTriggerFor]="notificationMenu" i18n-title title="Notifications">
+          <mat-icon matBadge={{notifications.length}} matBadgeColor="warn" MatBadgeSize="small">notifications</mat-icon>
+        </button>
+        <button mat-icon-button *ngIf="notifications.length === 0" routerLink="/notifications" i18n-title title="No Notification"><mat-icon>notifications_none</mat-icon></button>
       </ng-container>
     </ng-container>
-    <button mat-icon-button planetFeedback i18n-title title="Feedback" *ngIf="layout === 'classic' && !forceModern"><mat-icon>feedback_outline</mat-icon></button>
-    <button mat-icon-button routerLink="/feedback" i18n-title title="Messages"><mat-icon>mail_outline</mat-icon></button>
-    <ng-container *planetAuthorizedRoles>
-      <button mat-icon-button planetSync i18n-title title="Sync" *ngIf="onlineStatus === 'accepted' && layout === 'classic' && !forceModern"><mat-icon svgIcon="feedback"></mat-icon></button>
-    </ng-container>
-    <button mat-icon-button routerLink="/manager" i18n-title title="Manager Settings" *planetAuthorizedRoles="'manager,monitor'"><mat-icon svgIcon="usersettings"></mat-icon></button>
-    <ng-container *planetAuthorizedRoles="'learner'">
-      <button mat-icon-button *ngIf="notifications.length > 0" [matMenuTriggerFor]="notificationMenu" i18n-title title="Notifications">
-        <mat-icon matBadge={{notifications.length}} matBadgeColor="warn" MatBadgeSize="small">notifications</mat-icon>
-      </button>
-      <button mat-icon-button *ngIf="notifications.length === 0" routerLink="/notifications" i18n-title title="No Notification"><mat-icon>notifications_none</mat-icon></button>
-    </ng-container>
     <planet-language></planet-language>
-    <button mat-icon-button [matMenuTriggerFor]="userProfile">
-      <img *ngIf="user._attachments; else accountIcon" class="profile-image-large" [src]="userImgSrc">
-      <ng-template #accountIcon><mat-icon>account_circle</mat-icon></ng-template>
-    </button>
-    <mat-menu #userProfile="matMenu" [overlapTrigger]="false">
-      <button mat-menu-item routerLink="/users/profile/{{user.name}}" i18n>View Profile</button>
-      <button mat-menu-item i18n routerLink="/users/update/{{user.name}}">Edit Profile</button>
-      <button mat-menu-item i18n planetChangePassword *ngIf="user.planetCode === this.configuration.code">Change Password</button>
-      <button mat-menu-item i18n (click)="logoutClick()">Logout</button>
-    </mat-menu>
-    <!--Notification dropdown menu-->
-    <mat-menu #notificationMenu="matMenu" [overlapTrigger]="false" class="notification-menu">
-      <div class="notification-items">
-        <a mat-menu-item (click)="readAllNotification()">Mark all as Read</a>
-        <a [routerLink]="!notification.link ? '/norifications' : notification.link !== '/' ? [ notification.link, notification.linkParams || {} ] : '/'"
-          class="menu-item-notification"
-          [ngClass]="{'primary-text-color':notification.status==='unread'}"
-          mat-menu-item
-          *ngFor="let notification of notifications"
-          (click)="readNotification(notification)">
-          <p [innerHTML]="notification.message"><p>
-          <p *ngIf="notification.time > 0" class="small">{{notification.time | date: 'mediumDate'}}</p>
-          <mat-divider></mat-divider>
-        </a>
-      </div>
-      <a routerLink="/notifications" mat-menu-item>See All</a>
-    </mat-menu>
+    <button mat-button *ngIf="!user._id" i18n>Sign in</button>
+    <ng-container *ngIf="user._id">
+      <button mat-icon-button [matMenuTriggerFor]="userProfile">
+        <img *ngIf="user._attachments; else accountIcon" class="profile-image-large" [src]="userImgSrc">
+        <ng-template #accountIcon><mat-icon>account_circle</mat-icon></ng-template>
+      </button>
+      <mat-menu #userProfile="matMenu" [overlapTrigger]="false">
+        <button mat-menu-item routerLink="/users/profile/{{user.name}}" i18n>View Profile</button>
+        <button mat-menu-item i18n routerLink="/users/update/{{user.name}}">Edit Profile</button>
+        <button mat-menu-item i18n planetChangePassword *ngIf="user.planetCode === this.configuration.code">Change Password</button>
+        <button mat-menu-item i18n (click)="logoutClick()">Logout</button>
+      </mat-menu>
+      <!--Notification dropdown menu-->
+      <mat-menu #notificationMenu="matMenu" [overlapTrigger]="false" class="notification-menu">
+        <div class="notification-items">
+          <a mat-menu-item (click)="readAllNotification()">Mark all as Read</a>
+          <a [routerLink]="!notification.link ? '/norifications' : notification.link !== '/' ? [ notification.link, notification.linkParams || {} ] : '/'"
+            class="menu-item-notification"
+            [ngClass]="{'primary-text-color':notification.status==='unread'}"
+            mat-menu-item
+            *ngFor="let notification of notifications"
+            (click)="readNotification(notification)">
+            <p [innerHTML]="notification.message"><p>
+            <p *ngIf="notification.time > 0" class="small">{{notification.time | date: 'mediumDate'}}</p>
+            <mat-divider></mat-divider>
+          </a>
+        </div>
+        <a routerLink="/notifications" mat-menu-item>See All</a>
+      </mat-menu>
+    </ng-container>
   </span>
 </mat-toolbar>
 <mat-sidenav-container class="main-content" #content>
@@ -173,28 +178,30 @@
         </ng-container>
       </ul>
       <!--Bottom part-->
-      <ul class="bottom-nav">
-        <li>
-          <a mat-button planetFeedback i18n-title title="Feedback">
-            <mat-icon>feedback_outline</mat-icon>
-            <label i18n>Feedback</label>
-          </a>
-        </li>
-        <ng-container *planetAuthorizedRoles>
-          <li *ngIf="onlineStatus === 'accepted'">
-            <a mat-button planetSync i18n-title title="Sync">
-              <mat-icon svgIcon="feedback"></mat-icon>
-              <label i18n>Sync</label>
+      <ng-container *ngIf="user._id">
+        <ul class="bottom-nav">
+          <li>
+            <a mat-button planetFeedback i18n-title title="Feedback">
+              <mat-icon>feedback_outline</mat-icon>
+              <label i18n>Feedback</label>
             </a>
           </li>
-        </ng-container>
-        <li>
-          <a mat-button (click)="logoutClick()" i18n-title title="Logout">
-            <mat-icon svgIcon="logout"></mat-icon>
-            <label i18n>Logout</label>
-          </a>
-        </li>
-      </ul>
+          <ng-container *planetAuthorizedRoles>
+            <li *ngIf="onlineStatus === 'accepted'">
+              <a mat-button planetSync i18n-title title="Sync">
+                <mat-icon svgIcon="feedback"></mat-icon>
+                <label i18n>Sync</label>
+              </a>
+            </li>
+          </ng-container>
+          <li>
+            <a mat-button (click)="logoutClick()" i18n-title title="Logout">
+              <mat-icon svgIcon="logout"></mat-icon>
+              <label i18n>Logout</label>
+            </a>
+          </li>
+        </ul>
+      </ng-container>
     </div>
   </mat-sidenav>
   <mat-sidenav-content [ngClass]="{'gradient-background': backgroundRoute()}">

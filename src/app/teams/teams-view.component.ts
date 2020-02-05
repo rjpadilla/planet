@@ -59,6 +59,7 @@ export class TeamsViewComponent implements OnInit, AfterViewChecked, OnDestroy {
   tabSelectedIndex = 0;
   initTab;
   taskCount = 0;
+  messageCount = 0;
   configuration = this.stateService.configuration;
 
   constructor(
@@ -431,7 +432,11 @@ export class TeamsViewComponent implements OnInit, AfterViewChecked, OnDestroy {
       ...message
     }, 'Message has been posted successfully')
     .pipe(switchMap(() => this.sendNotifications('message')))
-    .pipe(finalize(() => this.dialogsLoadingService.stop())).subscribe(() => { this.dialogsFormService.closeDialogsForm(); });
+    .pipe(finalize(() => this.dialogsLoadingService.stop()))
+    .subscribe(() => {
+      this.messageCount++;
+      this.dialogsFormService.closeDialogsForm();
+    });
   }
 
   openResourcesDialog(resource?) {

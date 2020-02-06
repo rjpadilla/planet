@@ -190,29 +190,29 @@ render_compose_travis(){
 }
 
 create_multiarch_manifest_planet(){
-    build_message Creating Planet Multiarch Manifests
-    if [ "$REMOTE_MASTER_HASH" = "$LOCAL_HASH" ]
-    then
-        build_message Creating Planet Multiarch Manifest for Latest
-        # $1: latest arm
-        # $2: latest amd64
-        yq n image treehouses/planet:latest | \
-        yq w - manifests[0].image $1 | \
-        yq w - manifests[0].platform.architecture arm | \
-        yq w - manifests[0].platform.os linux | \
-        yq w - manifests[1].image $2 | \
-        yq w - manifests[1].platform.architecture amd64 | \
-        yq w - manifests[1].platform.os linux | \
-        tee /tmp/MA_manifests/MA_planet_latest.yaml
-    else
-        build_message Branch is Not master so no need to create Multiarch manifests for planet.
-    fi
+    # build_message Creating Planet Multiarch Manifests
+    # if [ "$REMOTE_MASTER_HASH" = "$LOCAL_HASH" ]
+    # then
+    #     build_message Creating Planet Multiarch Manifest for Latest
+    #     # $1: latest arm
+    #     # $2: latest amd64
+    #     yq n image treehouses/planet:latest | \
+    #     yq w - manifests[0].image $1 | \
+    #     yq w - manifests[0].platform.architecture arm | \
+    #     yq w - manifests[0].platform.os linux | \
+    #     yq w - manifests[1].image $2 | \
+    #     yq w - manifests[1].platform.architecture amd64 | \
+    #     yq w - manifests[1].platform.os linux | \
+    #     tee /tmp/MA_manifests/MA_planet_latest.yaml
+    # else
+    #     build_message Branch is Not master so no need to create Multiarch manifests for planet.
+    # fi
 
-    #Building for versioned
-    if [[ ! -z $gtag ]] || [[ ! -z $TRAVIS_TAG  ]]
-    then
-        if [ "$REMOTE_MASTER_HASH" = "$LOCAL_HASH" ]
-        then
+    # #Building for versioned
+    # if [[ ! -z $gtag ]] || [[ ! -z $TRAVIS_TAG  ]]
+    # then
+    #     if [ "$REMOTE_MASTER_HASH" = "$LOCAL_HASH" ]
+    #     then
             build_message Creating Planet Multiarch Manifest for Versioned.
             # $3: versioned arm
             # $4: versioned amd64
@@ -224,38 +224,39 @@ create_multiarch_manifest_planet(){
             yq w - manifests[1].platform.architecture amd64 | \
             yq w - manifests[1].platform.os linux | \
             tee /tmp/MA_manifests/MA_planet_versioned.yaml
-        else
-            build_message Local Commit is not latest. Hence Not creating Versioned Multiarch manifests for planet.
-        fi
-    else
-        build_message No tag present so no need to create Versioned Multiarch manifests for planet.
-    fi
+    echo /tmp/MA_manifests/MA_planet_versioned.yaml
+    #     else
+    #         build_message Local Commit is not latest. Hence Not creating Versioned Multiarch manifests for planet.
+    #     fi
+    # else
+    #     build_message No tag present so no need to create Versioned Multiarch manifests for planet.
+    # fi
 }
 
 create_multiarch_manifest_dbinit(){
-    build_message Creating db init Multiarch Manifests
-    if [ "$REMOTE_MASTER_HASH" = "$LOCAL_HASH" ]
-    then
-        build_message Creating Multiarch Manifest for db-init
-        # $1: db-init arm
-        # $2: db-init amd64
-        yq n image treehouses/planet:db-init | \
-        yq w - manifests[0].image $1 | \
-        yq w - manifests[0].platform.architecture arm | \
-        yq w - manifests[0].platform.os linux | \
-        yq w - manifests[1].image $2 | \
-        yq w - manifests[1].platform.architecture amd64 | \
-        yq w - manifests[1].platform.os linux | \
-        tee /tmp/MA_manifests/MA_db_init.yaml
-     else
-        build_message Branch is Not master so no need to create Multiarch manifests for db-init.
-     fi
+    # build_message Creating db init Multiarch Manifests
+    # if [ "$REMOTE_MASTER_HASH" = "$LOCAL_HASH" ]
+    # then
+    #     build_message Creating Multiarch Manifest for db-init
+    #     # $1: db-init arm
+    #     # $2: db-init amd64
+    #     yq n image treehouses/planet:db-init | \
+    #     yq w - manifests[0].image $1 | \
+    #     yq w - manifests[0].platform.architecture arm | \
+    #     yq w - manifests[0].platform.os linux | \
+    #     yq w - manifests[1].image $2 | \
+    #     yq w - manifests[1].platform.architecture amd64 | \
+    #     yq w - manifests[1].platform.os linux | \
+    #     tee /tmp/MA_manifests/MA_db_init.yaml
+    #  else
+    #     build_message Branch is Not master so no need to create Multiarch manifests for db-init.
+    #  fi
 
-     #Building for versioned
-     if [[ ! -z $gtag ]] || [[ ! -z $TRAVIS_TAG  ]]
-     then
-        if [ "$REMOTE_MASTER_HASH" = "$LOCAL_HASH" ]
-        then
+    #  #Building for versioned
+    #  if [[ ! -z $gtag ]] || [[ ! -z $TRAVIS_TAG  ]]
+    #  then
+    #     if [ "$REMOTE_MASTER_HASH" = "$LOCAL_HASH" ]
+    #     then
             build_message Creating Multiarch Manifest for db-init Versioned
             # $3: db-init versioned arm
             # $4: db-init versioned amd64
@@ -267,12 +268,13 @@ create_multiarch_manifest_dbinit(){
             yq w - manifests[1].platform.architecture amd64 | \
             yq w - manifests[1].platform.os linux | \
             tee /tmp/MA_manifests/MA_db_init_versioned.yaml
-        else
-            build_message Local Commit is not latest. Hence Not creating Versioned Multiarch manifests for db-init.
-        fi
-      else
-        build_message No tag present so no need to create Versioned Multiarch manifests for db-init.
-     fi
+    echo /tmp/MA_manifests/MA_db_init_versioned.yaml
+    #     else
+    #         build_message Local Commit is not latest. Hence Not creating Versioned Multiarch manifests for db-init.
+    #     fi
+    #   else
+    #     build_message No tag present so no need to create Versioned Multiarch manifests for db-init.
+    #  fi
 }
 
 push_multiarch_manifests(){

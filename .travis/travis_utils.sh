@@ -53,10 +53,10 @@ prepare_db_init(){
 
 prepare_planet_rpi(){
   build_message prepare planet docker...
-  PLANET_RPI=$DOCKER_ORG/$DOCKER_REPO:rpi-$VERSION-$BRANCH-$COMMIT
+  PLANET_RPI=$DOCKER_ORG/$DOCKER_REPO:rpi-$VERSION
   PLANET_RPI_VERSIONED=$DOCKER_ORG/$DOCKER_REPO:rpi-$VERSION
   PLANET_RPI_LATEST=$DOCKER_ORG/$DOCKER_REPO:rpi-latest
-  docker create --name reuse-artifact $DOCKER_ORG/$DOCKER_REPO_TEST:$VERSION-$BRANCH-$COMMIT
+  docker create --name reuse-artifact $DOCKER_ORG/$DOCKER_REPO_TEST:$VERSION
   mkdir -p ./ng-app/dist
   docker export reuse-artifact > reuse-artifact.tar
   # this used to had verbose mode,

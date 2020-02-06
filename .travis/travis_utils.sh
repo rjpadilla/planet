@@ -87,7 +87,7 @@ prepare_db_init_test(){
 
 prepare_multiarch_manifest_tool(){
   build_message Prepare Manifest tool
-  sudo wget -O /usr/local/bin/manifest_tool https://github.com/estesp/manifest-tool/releases/download/v0.7.0/manifest-tool-linux-amd64
+  sudo wget -O /usr/local/bin/manifest_tool https://github.com/estesp/manifest-tool/releases/download/v1.0.0/manifest-tool-linux-amd64
   sudo chmod +x /usr/local/bin/manifest_tool
   mkdir -p /tmp/MA_manifests
 }
@@ -224,7 +224,6 @@ create_multiarch_manifest_planet(){
             yq w - manifests[1].platform.architecture amd64 | \
             yq w - manifests[1].platform.os linux | \
             tee /tmp/MA_manifests/MA_planet_versioned.yaml
-    echo /tmp/MA_manifests/MA_planet_versioned.yaml
     #     else
     #         build_message Local Commit is not latest. Hence Not creating Versioned Multiarch manifests for planet.
     #     fi
@@ -268,7 +267,6 @@ create_multiarch_manifest_dbinit(){
             yq w - manifests[1].platform.architecture amd64 | \
             yq w - manifests[1].platform.os linux | \
             tee /tmp/MA_manifests/MA_db_init_versioned.yaml
-    echo /tmp/MA_manifests/MA_db_init_versioned.yaml
     #     else
     #         build_message Local Commit is not latest. Hence Not creating Versioned Multiarch manifests for db-init.
     #     fi

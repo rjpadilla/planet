@@ -279,7 +279,7 @@ push_multiarch_manifests(){
     build_message Pushing Multiarch Manifests to cloud
     if [ "$REMOTE_MASTER_HASH" = "$LOCAL_HASH" ]
     then
-        manifest_tool push from-spec /tmp/MA_manifests/MA_planet_latest.yaml
+        manifest_tool --debug push from-spec /tmp/MA_manifests/MA_planet_latest.yaml
         manifest_tool push from-spec /tmp/MA_manifests/MA_db_init.yaml
         build_message Successfully Pushed Multiarch Manifests to cloud
     else

@@ -277,20 +277,20 @@ create_multiarch_manifest_dbinit(){
 
 push_multiarch_manifests(){
     build_message Pushing Multiarch Manifests to cloud
-    if [ "$REMOTE_MASTER_HASH" = "$LOCAL_HASH" ]
-    then
-        manifest_tool --debug push from-spec /tmp/MA_manifests/MA_planet_latest.yaml
-        manifest_tool push from-spec /tmp/MA_manifests/MA_db_init.yaml
-        build_message Successfully Pushed Multiarch Manifests to cloud
-    else
-         build_message Branch is Not master so no need to Push Multiarch Manifests to cloud
-    fi
+    # if [ "$REMOTE_MASTER_HASH" = "$LOCAL_HASH" ]
+    # then
+    #     manifest_tool push from-spec /tmp/MA_manifests/MA_planet_latest.yaml
+    #     manifest_tool push from-spec /tmp/MA_manifests/MA_db_init.yaml
+    #     build_message Successfully Pushed Multiarch Manifests to cloud
+    # else
+    #      build_message Branch is Not master so no need to Push Multiarch Manifests to cloud
+    # fi
     #Building for versioned
     # if [[ ! -z $gtag ]] || [[ ! -z $TRAVIS_TAG  ]]
     # then
     #     if [ "$REMOTE_MASTER_HASH" = "$LOCAL_HASH" ]
     #     then
-            manifest_tool push from-spec /tmp/MA_manifests/MA_planet_versioned.yaml
+            manifest_tool --debug push from-spec /tmp/MA_manifests/MA_planet_versioned.yaml
             manifest_tool push from-spec /tmp/MA_manifests/MA_db_init_versioned.yaml
             build_message Successfully Pushed Versioned Multiarch Manifests to cloud
     #     else

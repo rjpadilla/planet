@@ -8,7 +8,7 @@ import { CustomValidators } from '../validators/custom-validators';
 import { DialogsPromptComponent } from '../shared/dialogs/dialogs-prompt.component';
 import { forkJoin } from 'rxjs';
 import { CommunityListDialogComponent } from '../community/community-list-dialog.component';
-import { dedupeShelfReduce } from '../shared/utils';
+import { dedupeShelfReduce, dedupeObjectArray } from '../shared/utils';
 
 @Component({
   selector: 'planet-news-list',
@@ -83,9 +83,11 @@ export class NewsListComponent implements OnChanges {
   }
 
   postNews(oldNews, newNews) {
+    const { viewableBy: vBy, viewableId: vId, ...news } = oldNews;
+    const viewIn = dedupeObjectArray((vId ? [ { _id: vId, section: vBy } ] : []).concat(oldNews.viewIn || []), ['_id']);
     this.newsService.postNews(
-      { ...oldNews, ...newNews, viewableBy: this.viewableBy, viewableId: this.viewableId },
-      oldNews._id ? this.editSuccessMessage : 'Reply has been posted successfully.'
+      { ...news, ...newNews, viewIn },
+      news._id ? this.editSuccessMessage : 'Reply has been posted successfully.'
     ).subscribe(() => {
       this.dialogsFormService.closeDialogsForm();
       this.dialogsLoadingService.stop();
@@ -103,10 +105,13 @@ export class NewsListComponent implements OnChanges {
   }
 
   deleteNews(news) {
+    const { viewableBy: vBy, viewableId: vId, ...newNews } = news;
+    const viewIn = (vId ? [ { _id: vId, section: vBy } ] : []).concat(newNews.viewIn || []).filter(viewable => viewable._id !== this.viewableId && viewable.section !== this.viewableBy);
     return {
-      request: forkJoin([
-        this.newsService.deleteNews(news), this.newsService.rearrangeRepliesForDelete(this.replyObject[news._id], this.replyViewing._id)
-      ]),
+      request: viewIn.length ? this.newsService.postNews({ ...newNews, viewIn}) :
+        forkJoin([
+          this.newsService.deleteNews(news), this.newsService.rearrangeRepliesForDelete(this.replyObject[news._id], this.replyViewing._id)
+        ]),
       onNext: (data) => {
         // It's safer to remove the item from the array based on its id than to splice based on the index
         this.deleteDialog.close();

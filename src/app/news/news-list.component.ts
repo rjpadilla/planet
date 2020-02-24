@@ -106,7 +106,8 @@ export class NewsListComponent implements OnChanges {
 
   deleteNews(news) {
     const { viewableBy: vBy, viewableId: vId, ...newNews } = news;
-    const viewIn = (vId ? [ { _id: vId, section: vBy } ] : []).concat(newNews.viewIn || []).filter(viewable => viewable._id !== this.viewableId && viewable.section !== this.viewableBy);
+    const viewIn = (vId ? [ { _id: vId, section: vBy } ] : []).concat(newNews.viewIn || [])
+      .filter(viewable => viewable._id !== this.viewableId && viewable.section !== this.viewableBy);
     return {
       request: viewIn.length ? this.newsService.postNews({ ...newNews, viewIn}) :
         forkJoin([

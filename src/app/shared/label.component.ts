@@ -14,6 +14,7 @@ import { Component, Input } from '@angular/core';
       help {Help Wanted}
       offer {Offer}
       advice {Request for Advice}
+      public {Public}
     }</span>
   `
 })

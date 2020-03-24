@@ -17,10 +17,11 @@ import { CommunityListComponent } from '../community/community-list.component';
 import { RouterModule } from '@angular/router';
 import { LabelComponent } from './label.component';
 import { MyPlanetTableComponent } from '../manager-dashboard/reports/myplanet-table.component';
+import { ResourcesViewerModule } from '../resources/view-resources/resources-viewer.module';
 
 @NgModule({
   imports: [
-    CommonModule, MaterialModule, CovalentMarkdownModule, RouterModule
+    CommonModule, MaterialModule, CovalentMarkdownModule, RouterModule, ResourcesViewerModule
   ],
   exports: [
     PlanetLocalStatusComponent,

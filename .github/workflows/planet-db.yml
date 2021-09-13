@@ -17,7 +17,7 @@ jobs:
       - name: Build image
         run: |
           repo="rjpadilla/planet:db-init"
-          docker build -f './docker/db-init/Dockerfile' -t $repo .
+          docker build -f './docker/db-init/Dockerfile' -t $repo --build-arg LANGUAGE='eng' --build-arg LANGUAGE2='en' .
           docker images
           docker push $repo
 
